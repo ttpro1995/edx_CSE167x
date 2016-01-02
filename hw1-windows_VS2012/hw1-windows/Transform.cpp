@@ -8,20 +8,26 @@
 // Helper rotation function.  
 mat3 Transform::rotate(const float degrees, const vec3& axis) {
   // YOUR CODE FOR HW1 HERE
-	float theta = degrees*0.0174532925;
+	float theta = glm::radians(degrees);
 	float x = axis.x;
 	float y = axis.y;
 	float z = axis.z;
 
-	mat3 I(1.0);//identity 
+	mat3 I = mat3(1,0,0,
+				0,1,0,
+				0,0,1);//identity 
 
-	mat3 aa = mat3(x*x, x*y, x*z, x*y, y*y, y*z, x*z, y*z, z*z);
+	mat3 aa = mat3(x*x, x*y, x*z,
+		x*y, y*y, y*z,
+		x*z, y*z,z*z);
 
-	mat3 A = mat3(0, z, -y, -z, 0, x, y, -x, 0);
+	mat3 A = mat3(0, z, -y,
+		-z, 0, x,
+		y, -x, 0);
 	
 	mat3 result;
 
-	result = cos(theta)*I + (1 - cos(theta))*A + sin(theta)*A;
+	result = cos(theta)*I + (1 - cos(theta))*aa + sin(theta)*A;
 
   // You will change this return call
   return result;
@@ -34,14 +40,14 @@ void Transform::left(float degrees, vec3& eye, vec3& up) {
 
 	//caculate rotation Matrix
 	mat3 rotationMatrix = rotate(degrees, up);
-
 	//calculate the eye
 	eye = rotationMatrix*eye;
-	std::cout << "eye = " << eye.x << " " << eye.y << " " << eye.z << "\n";
-	vec3 negEye = -eye;
-	std::cout << "negative eye = " << negEye.x << " " << negEye.y << " " << negEye.z << "\n";
-	std::cout << "up= " << up.x << " " << up.y << " " << up.z << "\n";
 
+	/*
+	debug code
+	std::cout << "eye = " << eye.x << " " << eye.y << " " << eye.z << "\n";
+	std::cout << "up= " << up.x << " " << up.y << " " << up.z << "\n";
+	*/
 
 }
 
